@@ -1,0 +1,342 @@
+# This file was written with GPI v1.0.0 using Network v3. Do not edit this line.
+{
+ "DATETIME": "Fri Sep  1 04:40:24 2017",
+ "GPI_VERSION": "1.0.0",
+ "HEADER": "This is a GPI Network File",
+ "NETWORK_VERSION": "3",
+ "PLATFORM": {
+  "HOSTNAME": "gpilab",
+  "NUM_CPUS": 4,
+  "OS": "Linux",
+  "PLATFORM": "Linux-4.2.0-18-generic-x86_64-with-debian-jessie-sid",
+  "PYTHON": "CPython",
+  "PYTHON_VERSION": "3.5.0",
+  "TOTAL_PHYMEM": 4140109824,
+  "TOTAL_PHYMEM_STR": "3.86 GB"
+ },
+ "TOTAL_PMEM": "288",
+ "WALLTIME": "1.8222784996032715",
+ "layouts": [],
+ "nodes": {
+  "macroNodes": [],
+  "nodes": [
+   {
+    "avgwalltime": "0.29404037877133016",
+    "id": 140115092155272,
+    "key": "pulseq-gpi.mr_nodes.GE_SpinEchoEPI",
+    "name": "GE_SpinEchoEPI",
+    "ports": [
+     {
+      "connections": [
+       {
+        "dest": {
+         "nodeID": 140115098615672,
+         "portID": 140115098684584,
+         "portName": "input",
+         "portNum": 0
+        },
+        "src": {
+         "nodeID": 140115092155272,
+         "portID": 140115098612792,
+         "portName": "output",
+         "portNum": 0
+        }
+       },
+       {
+        "dest": {
+         "nodeID": 140115098698088,
+         "portID": 140115098701112,
+         "portName": "input",
+         "portNum": 0
+        },
+        "src": {
+         "nodeID": 140115092155272,
+         "portID": 140115098612792,
+         "portName": "output",
+         "portNum": 0
+        }
+       }
+      ],
+      "id": 140115098612792,
+      "obligation": null,
+      "portnum": 0,
+      "porttitle": "output",
+      "porttype": 65541,
+      "widgetTitle": null
+     }
+    ],
+    "pos": [
+     -14.666666666666657,
+     -43.0
+    ],
+    "stdwalltime": "0.060767208496376596",
+    "walltime": "0.41272878646850586",
+    "widget_settings": {
+     "label": "",
+     "parms": [
+      {
+       "kwargs": {
+        "collapsed": false,
+        "id": 140115098633560,
+        "inport": false,
+        "mask": false,
+        "maskedval": "33",
+        "outport": false,
+        "placeholder": "max_grad",
+        "quietval": null,
+        "val": "33",
+        "visible": true
+       },
+       "name": "Maximum Gradient (mT/m)",
+       "type": "<class 'gpi.widgets.StringBox'>"
+      },
+      {
+       "kwargs": {
+        "collapsed": false,
+        "id": 140115098633992,
+        "inport": false,
+        "mask": false,
+        "maskedval": "110",
+        "outport": false,
+        "placeholder": "max_slew",
+        "quietval": null,
+        "val": "110",
+        "visible": true
+       },
+       "name": "Maximum Slew Rate (T/m/s)",
+       "type": "<class 'gpi.widgets.StringBox'>"
+      },
+      {
+       "kwargs": {
+        "collapsed": false,
+        "id": 140115098634424,
+        "inport": false,
+        "mask": false,
+        "maskedval": "200e-3",
+        "outport": false,
+        "placeholder": "TR",
+        "quietval": null,
+        "val": "200e-3",
+        "visible": true
+       },
+       "name": "Repetition Time (s)",
+       "type": "<class 'gpi.widgets.StringBox'>"
+      },
+      {
+       "kwargs": {
+        "collapsed": false,
+        "id": 140115098634856,
+        "inport": false,
+        "mask": false,
+        "maskedval": "70e-3",
+        "outport": false,
+        "placeholder": "TE",
+        "quietval": null,
+        "val": "70e-3",
+        "visible": true
+       },
+       "name": "Echo Time (s)",
+       "type": "<class 'gpi.widgets.StringBox'>"
+      },
+      {
+       "kwargs": {
+        "collapsed": false,
+        "id": 140115098635288,
+        "inport": false,
+        "mask": false,
+        "maskedval": "220e-3",
+        "outport": false,
+        "placeholder": "fov",
+        "quietval": null,
+        "val": "220e-3",
+        "visible": true
+       },
+       "name": "Field of View",
+       "type": "<class 'gpi.widgets.StringBox'>"
+      },
+      {
+       "kwargs": {
+        "collapsed": false,
+        "id": 140115098635720,
+        "inport": false,
+        "mask": false,
+        "maskedval": "64",
+        "outport": false,
+        "placeholder": "Nx",
+        "quietval": null,
+        "val": "64",
+        "visible": true
+       },
+       "name": "Nx",
+       "type": "<class 'gpi.widgets.StringBox'>"
+      },
+      {
+       "kwargs": {
+        "collapsed": false,
+        "id": 140115098636152,
+        "inport": false,
+        "mask": false,
+        "maskedval": "64",
+        "outport": false,
+        "placeholder": "Ny",
+        "quietval": null,
+        "val": "64",
+        "visible": true
+       },
+       "name": "Ny",
+       "type": "<class 'gpi.widgets.StringBox'>"
+      },
+      {
+       "kwargs": {
+        "button_title": "Compute events",
+        "collapsed": false,
+        "id": 140115098612072,
+        "inport": false,
+        "outport": false,
+        "quietval": null,
+        "toggle": false,
+        "val": false,
+        "visible": true
+       },
+       "name": "ComputeEvents",
+       "type": "<class 'gpi.widgets.PushButton'>"
+      }
+     ]
+    }
+   },
+   {
+    "avgwalltime": "0.281301482518514",
+    "id": 140115098698088,
+    "key": "pulseq-gpi.mr_nodes.WriteSeq",
+    "name": "WriteSeq",
+    "ports": [
+     {
+      "connections": [
+       {
+        "dest": {
+         "nodeID": 140115098698088,
+         "portID": 140115098701112,
+         "portName": "input",
+         "portNum": 0
+        },
+        "src": {
+         "nodeID": 140115092155272,
+         "portID": 140115098612792,
+         "portName": "output",
+         "portNum": 0
+        }
+       }
+      ],
+      "id": 140115098701112,
+      "obligation": 100,
+      "portnum": 0,
+      "porttitle": "input",
+      "porttype": 65540,
+      "widgetTitle": null
+     }
+    ],
+    "pos": [
+     -4.666666666666657,
+     42.0
+    ],
+    "stdwalltime": "0.05323937095545746",
+    "walltime": "0.41663312911987305",
+    "widget_settings": {
+     "label": "",
+     "parms": [
+      {
+       "kwargs": {
+        "collapsed": false,
+        "directory": "/home/gpi/SE_EPI",
+        "id": 140115098701256,
+        "inport": false,
+        "outport": false,
+        "quietval": null,
+        "val": "/home/gpi/SE_EPI/SE_EPI_GPI_30082017",
+        "visible": true
+       },
+       "name": "File location",
+       "type": "<class 'gpi.widgets.SaveFileBrowser'>"
+      },
+      {
+       "kwargs": {
+        "button_title": "Save now",
+        "collapsed": false,
+        "id": 140115098771528,
+        "inport": false,
+        "outport": false,
+        "quietval": null,
+        "toggle": false,
+        "val": false,
+        "visible": true
+       },
+       "name": "Write seq file",
+       "type": "<class 'gpi.widgets.PushButton'>"
+      }
+     ]
+    }
+   },
+   {
+    "avgwalltime": "1.0582468807697296",
+    "id": 140115098615672,
+    "key": "pulseq-gpi.mr_nodes.PlotSeq",
+    "name": "PlotSeq",
+    "ports": [
+     {
+      "connections": [
+       {
+        "dest": {
+         "nodeID": 140115098615672,
+         "portID": 140115098684584,
+         "portName": "input",
+         "portNum": 0
+        },
+        "src": {
+         "nodeID": 140115092155272,
+         "portID": 140115098612792,
+         "portName": "output",
+         "portNum": 0
+        }
+       }
+      ],
+      "id": 140115098684584,
+      "obligation": 100,
+      "portnum": 0,
+      "porttitle": "input",
+      "porttype": 65540,
+      "widgetTitle": null
+     }
+    ],
+    "pos": [
+     19.333333333333343,
+     1.0
+    ],
+    "stdwalltime": "0.19489550674241668",
+    "walltime": "0.936145544052124",
+    "widget_settings": {
+     "label": "",
+     "parms": [
+      {
+       "kwargs": {
+        "collapsed": true,
+        "id": 140115098693208,
+        "inport": false,
+        "interp": false,
+        "line": null,
+        "noscroll": true,
+        "outport": false,
+        "points": null,
+        "quietval": null,
+        "scale": 1.0,
+        "val": null,
+        "visible": true
+       },
+       "name": "Sequence Plot",
+       "type": "<class 'gpi.widgets.DisplayBox'>"
+      }
+     ]
+    }
+   }
+  ]
+ }
+}
