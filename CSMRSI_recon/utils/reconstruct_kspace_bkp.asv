@@ -1,0 +1,11 @@
+function kspace= reconstruct_kspace_bkp(spectra,mask)
+% function kspace= reconstruct_kspace(spectra,mask)
+% reconstructs k-space from spectra.\
+if(nargin <2)
+    mask = ones(size(spectra));
+end
+kspace = ifft(spectra,[],3);
+
+kspace = ifftshift(kspace,1);
+kspace = ifftshift(kspace,2);
+kspace = (1/sqrt(numel(spectra)))*kspace.*mask;

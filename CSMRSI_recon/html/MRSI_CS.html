@@ -1,0 +1,243 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Main file for demonstration of compressed sensing based reconstruction of undersampled MRSI data</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2011-11-30"><meta name="DC.source" content="MRSI_CS.m"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head><body><div class="content"><h1>Main file for demonstration of compressed sensing based reconstruction of undersampled MRSI data</h1><!--introduction--><p>r =0.3 Tv =0.001 XV =0.005 Uses k-space true recon.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Choose periodization mode for wavelet decomposition</a></li><li><a href="#2">Variable Initialization</a></li><li><a href="#3">Read input data.</a></li><li><a href="#4">Undersample k-space</a></li><li><a href="#5">Zero filled with density compensation</a></li><li><a href="#6">Reconstruction parameters.</a></li><li><a href="#7">Wavelet coeffs.</a></li><li><a href="#8">Iterative reconstruction</a></li><li><a href="#10">Write truth file.</a></li><li><a href="#11">Check grid matching - added this part for visualization - Spectrum of interest is in the first 400 points.</a></li><li><a href="#12">Check voxel matching - Spectrum of interest is in the first 400 points.</a></li><li><a href="#13">Write reconstructed file.</a></li></ul></div><h2>Choose periodization mode for wavelet decomposition<a name="1"></a></h2><pre class="codeinput">close <span class="string">all</span>;
+dwtmode(<span class="string">'per'</span>);
+addpath(genpath(<span class="string">'.'</span>));clc;
+</pre><pre class="codeoutput"> 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!  WARNING: Change DWT Extension Mode  !
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                         
+*****************************************
+**  DWT Extension Mode: Periodization  **
+*****************************************
+                                         
+</pre><h2>Variable Initialization<a name="2"></a></h2><pre class="codeinput">write_spectra =0;
+usamp = 0.5;<span class="comment">%usamp factors of 0.5,0.33,0.25,0.2,0.1</span>
+D = [16 16 1024];<span class="comment">% Size of the data set</span>
+P =10;
+</pre><h2>Read input data.<a name="3"></a></h2><pre class="codeinput">[time_dom_signal,spectra,str_data2] = read_brain_data(D);
+spectra = spectra/max(abs(spectra(:)));
+kspace = reconstruct_kspace(spectra,ones(size(spectra)));
+</pre><pre class="codeoutput">Error using textscan
+Invalid file identifier.  Use fopen to generate a valid file identifier.
+
+Error in read_brain_data (line 22)
+str_data = textscan(fid,'%s','delimiter','\n');
+
+Error in MRSI_CS (line 19)
+[time_dom_signal,spectra,str_data2] = read_brain_data(D);
+</pre><h2>Undersample k-space<a name="4"></a></h2><pre class="codeinput">pdf = genPDF([D(1) D(2)],P,usamp,2,usamp,0);<span class="comment">%10x WAS 0.1 FOR ALL OTHER CASES%0.5,0.33,0.25,0.20,0.10</span>
+[mask,~,actpctg] = genSampling(pdf,30,3);<span class="comment">%actpctg is the actual usamp achieved</span>
+disp([<span class="string">'Actual undersampling is '</span>,num2str(sum(mask(:))/numel(mask))]);<span class="comment">% another verification</span>
+figure;imagesc(mask);
+mask = mask./pdf;   <span class="comment">%Density compensation</span>
+sampling_mask=repmat(mask,[1 1 D(3)]); <span class="comment">%repeat through time.</span>
+kspace_us = kspace.*sampling_mask;
+</pre><h2>Zero filled with density compensation<a name="5"></a></h2><pre class="codeinput">csi_zfwdc = reconstruct_spectra(kspace_us);
+
+<span class="comment">% This helps in using one value for beta for all cases.</span>
+kspace =  kspace/max(abs(csi_zfwdc(:)));
+kspace_us = kspace_us/max(abs(csi_zfwdc(:)));
+csi_zfwdc = csi_zfwdc/max(abs(csi_zfwdc(:)));
+</pre><h2>Reconstruction parameters.<a name="6"></a></h2><pre class="codeinput">maxIter= 8; <span class="comment">% Number of ncg iterations (internal to the recon iter) was 8.</span>
+xfmWeight =0.001;
+TVWeight =0.005;
+level = 4;
+wname = <span class="string">'db4'</span>;
+<span class="comment">%%%%%</span>
+</pre><h2>Wavelet coeffs.<a name="7"></a></h2><pre class="codeinput">        [W,B] =get_wcoff(csi_zfwdc);
+</pre><h2>Iterative reconstruction<a name="8"></a></h2><pre class="codeinput">        <span class="keyword">for</span> k=1:8 <span class="comment">% Number of recon iterations was 8.</span>
+        m1 = ncg(W,B,sampling_mask,kspace_us,maxIter,TVWeight,xfmWeight,level,wname);
+        [W,B] =get_wcoff(m1);
+<span class="comment">%       imagesc(sum(abs(m1),3));colorbar;drawnow;</span>
+        <span class="keyword">end</span>
+
+
+
+RMSE =  get_RMSE(abs(spectra),abs(m1));
+disp(RMSE);
+</pre><p>display_spectra_mosaic(spectra);</p><h2>Write truth file.<a name="10"></a></h2><pre class="codeinput"><span class="keyword">if</span>(write_spectra ==1)
+    [filename,pathname]=uiputfile(<span class="string">'C:\Users\sgeeth\Documents\Data\CS_CSI\For_paper\Processed_data\*.txt'</span>,<span class="string">'Save as true jmrui file'</span>);
+    fileaddress = fullfile(pathname,filename);
+    save_jMRUI_fmts(spectra,str_data2,fileaddress);
+<span class="keyword">end</span>
+</pre><h2>Check grid matching - added this part for visualization - Spectrum of interest is in the first 400 points.<a name="11"></a></h2><p>display_spectra_mosaic(cat(3,spectra(:,:,1:400),zeros(16,16,100), m1(:,:,1:400)));</p><pre class="codeinput">display_spectra_mosaic(spectra(4:10,4:10,1:400), m1(4:10,4:10,1:400));
+</pre><h2>Check voxel matching - Spectrum of interest is in the first 400 points.<a name="12"></a></h2><pre class="codeinput">figure;
+subplot(211);
+plot(squeeze(abs(spectra(8,8,1:400))));hold <span class="string">on</span>;
+plot(squeeze(abs(m1(8,8,1:400))),<span class="string">'r'</span>);
+
+
+subplot(212);
+plot(squeeze(abs(spectra(1,1,1:400))));hold <span class="string">on</span>;
+plot(squeeze(abs(m1(1,1,1:400))),<span class="string">'r'</span>);
+drawnow;
+</pre><h2>Write reconstructed file.<a name="13"></a></h2><pre class="codeinput">[filename,pathname]=uiputfile(<span class="string">'\*.txt'</span>,<span class="string">'Save as jmrui file'</span>);
+<span class="keyword">if</span>(filename ~= 0)
+fileaddress = fullfile(pathname,filename);
+save_jMRUI_fmts(m1,str_data2,fileaddress);
+<span class="keyword">end</span>
+</pre><p class="footer"><br>
+      Published with MATLAB&reg; 7.13<br></p></div><!--
+##### SOURCE BEGIN #####
+%% Main file for demonstration of compressed sensing based reconstruction of undersampled MRSI data
+% r =0.3
+% Tv =0.001
+% XV =0.005
+% Uses k-space true recon.
+
+%% Choose periodization mode for wavelet decomposition
+close all;
+dwtmode('per');
+addpath(genpath('.'));clc;
+
+%% Variable Initialization
+write_spectra =0;
+usamp = 0.5;%usamp factors of 0.5,0.33,0.25,0.2,0.1
+D = [16 16 1024];% Size of the data set
+P =10;
+
+%% Read input data.
+[time_dom_signal,spectra,str_data2] = read_brain_data(D);
+spectra = spectra/max(abs(spectra(:)));
+kspace = reconstruct_kspace(spectra,ones(size(spectra)));
+
+
+%% Undersample k-space
+pdf = genPDF([D(1) D(2)],P,usamp,2,usamp,0);%10x WAS 0.1 FOR ALL OTHER CASES%0.5,0.33,0.25,0.20,0.10
+[mask,~,actpctg] = genSampling(pdf,30,3);%actpctg is the actual usamp achieved
+disp(['Actual undersampling is ',num2str(sum(mask(:))/numel(mask))]);% another verification
+figure;imagesc(mask);
+mask = mask./pdf;   %Density compensation
+sampling_mask=repmat(mask,[1 1 D(3)]); %repeat through time.
+kspace_us = kspace.*sampling_mask;
+
+
+%% Zero filled with density compensation
+csi_zfwdc = reconstruct_spectra(kspace_us);
+
+% This helps in using one value for beta for all cases.
+kspace =  kspace/max(abs(csi_zfwdc(:)));
+kspace_us = kspace_us/max(abs(csi_zfwdc(:)));
+csi_zfwdc = csi_zfwdc/max(abs(csi_zfwdc(:)));
+
+
+%% Reconstruction parameters.
+maxIter= 8; % Number of ncg iterations (internal to the recon iter) was 8.
+xfmWeight =0.001;
+TVWeight =0.005;
+level = 4;
+wname = 'db4';
+%%%%%
+
+%% Wavelet coeffs.
+        [W,B] =get_wcoff(csi_zfwdc);
+       
+%% Iterative reconstruction
+        for k=1:8 % Number of recon iterations was 8.
+        m1 = ncg(W,B,sampling_mask,kspace_us,maxIter,TVWeight,xfmWeight,level,wname);
+        [W,B] =get_wcoff(m1);
+%       imagesc(sum(abs(m1),3));colorbar;drawnow;
+        end
+ 
+        
+  
+RMSE =  get_RMSE(abs(spectra),abs(m1));
+disp(RMSE);
+%% 
+% display_spectra_mosaic(spectra);
+%% Write truth file.
+if(write_spectra ==1)
+    [filename,pathname]=uiputfile('C:\Users\sgeeth\Documents\Data\CS_CSI\For_paper\Processed_data\*.txt','Save as true jmrui file');
+    fileaddress = fullfile(pathname,filename);
+    save_jMRUI_fmts(spectra,str_data2,fileaddress);
+end
+%% Check grid matching - added this part for visualization - Spectrum of interest is in the first 400 points.
+% display_spectra_mosaic(cat(3,spectra(:,:,1:400),zeros(16,16,100), m1(:,:,1:400)));
+display_spectra_mosaic(spectra(4:10,4:10,1:400), m1(4:10,4:10,1:400));
+
+
+%% Check voxel matching - Spectrum of interest is in the first 400 points.
+figure;
+subplot(211);
+plot(squeeze(abs(spectra(8,8,1:400))));hold on;
+plot(squeeze(abs(m1(8,8,1:400))),'r'); 
+
+
+subplot(212);
+plot(squeeze(abs(spectra(1,1,1:400))));hold on;
+plot(squeeze(abs(m1(1,1,1:400))),'r');
+drawnow;
+
+
+%% Write reconstructed file.
+[filename,pathname]=uiputfile('\*.txt','Save as jmrui file');
+if(filename ~= 0)
+fileaddress = fullfile(pathname,filename);
+save_jMRUI_fmts(m1,str_data2,fileaddress);
+end
+##### SOURCE END #####
+--></body></html>

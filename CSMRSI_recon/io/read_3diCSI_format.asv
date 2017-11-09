@@ -1,0 +1,61 @@
+%read_3diCSI_format
+[filename, pathname] = uigetfile('C:\Users\sgeeth\Documents\Code\Kspace\Wrapup_CSMRSI\*.txt', 'Pick the corresponding txt file for the brain');
+fileaddress  = fullfile(pathname,filename);
+fid=fopen(fileaddress);
+str_data = textscan(fid,'%s','delimiter','\n');
+str_data2 = str_data{1,1};
+
+
+%% Softcode it later; no time today
+num_vox =192;
+num_points =1024;
+num_x =16;num_y=12;
+
+
+%% Read data into a store variable.
+csi_data_store = zeros(num_vox*num_points,2);
+
+mn=0;
+flag_found=Inf;
+for g=1:length(str_data2)
+    tempo = str_data2{g}';
+    k=findstr(tempo','Real');
+    if(k>0)
+        disp(tempo');
+        flag_found=g;
+
+    end
+    
+    if(g>flag_found)
+        mn = mn+1;
+        if(mn > (num_vox*num_points))
+            return;
+        end
+        csi_data_store(mn,:) =str2num(str_data2{g});
+        
+    end
+    
+end
+
+%% Reorder data store according to the format. y outer, x inner
+csi_data = zeros(num_x,num_y,num_points);
+
+for y =1:num_y
+    for x =1:num_x
+        
+        
+    end
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
