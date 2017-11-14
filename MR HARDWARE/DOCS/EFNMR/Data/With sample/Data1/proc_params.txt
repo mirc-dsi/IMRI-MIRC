@@ -1,0 +1,7 @@
+phase: 0.0
+line broadening: 0.0
+left shift: 0
+spectrum points: 65536
+echo: False
+multiple: False
+num echoes: 1.0
