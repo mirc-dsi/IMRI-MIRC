@@ -164,7 +164,7 @@ def getMaxOfDataset(dir):
     print (g_min,g_max)
     return max ,min
 
-def loadNaturalImages(path,size):
+def loadData(path,size):
     global g_imSize
     g_imSize = size
     dir = path
