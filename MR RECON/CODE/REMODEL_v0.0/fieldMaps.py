@@ -212,45 +212,5 @@ def loadNaturalImages(path,size):
            Y_train_data = np.append(Y_train_data,A,axis = 1)                     
    
     return X_train_data, Y_train_data
-#data=np.zeros((g_imSize,g_imSize,2))
-getMaxOfDataset("D:\\asha1\\Work\\IFFT_Code\\Automap_Data")
-print (g_min,g_max,"min and max vlaues of the whole dataset")
-X_train_orig,Y_train_orig =   loadNaturalImages("D:\\asha1\\Work\\IFFT_Code\\Automap_Data\\1",g_imSize)
-X_train_orig2,Y_train_orig2 = loadNaturalImages("D:\\asha1\\Work\\IFFT_Code\\Automap_Data\\2",g_imSize)
-X_train_orig3,Y_train_orig3 = loadNaturalImages("D:\\asha1\\Work\\IFFT_Code\\Automap_Data\\3",g_imSize)
-X_train_orig4,Y_train_orig4 = loadNaturalImages("D:\\asha1\\Work\\IFFT_Code\\Automap_Data\\4",g_imSize)
-X_train_orig5,Y_train_orig5 = loadNaturalImages("D:\\asha1\\Work\\IFFT_Code\\Automap_Data\\5",g_imSize)
-X_train_orig6,Y_train_orig6 = loadNaturalImages("D:\\asha1\\Work\\IFFT_Code\\Automap_Data\\6",g_imSize)
-X_train_orig7,Y_train_orig7 = loadNaturalImages("D:\\asha1\\Work\\IFFT_Code\\Automap_Data\\7",g_imSize)
-X_train_orig8,Y_train_orig8 = loadNaturalImages("D:\\asha1\\Work\\IFFT_Code\\Automap_Data\\8",g_imSize)
-X_train_orig9,Y_train_orig9 = loadNaturalImages("D:\\asha1\\Work\\IFFT_Code\\Automap_Data\\9",g_imSize)
-X_train_orig10,Y_train_orig10 = loadNaturalImages("D:\\asha1\\Work\\IFFT_Code\\Automap_Data\\10",g_imSize)
-#
-X_train_orig = np.append(X_train_orig,X_train_orig2,axis = 0)
-X_train_orig = np.append(X_train_orig,X_train_orig3,axis = 0)
-X_train_orig = np.append(X_train_orig,X_train_orig4,axis = 0)
-X_train_orig = np.append(X_train_orig,X_train_orig5,axis = 0)
-X_train_orig = np.append(X_train_orig,X_train_orig6,axis = 0)
-X_train_orig = np.append(X_train_orig,X_train_orig7,axis = 0)
-X_train_orig = np.append(X_train_orig,X_train_orig8,axis = 0)
-X_train_orig = np.append(X_train_orig,X_train_orig9,axis = 0)
-X_train_orig = np.append(X_train_orig,X_train_orig10,axis = 0)
 
-Y_train_orig = np.append(Y_train_orig,Y_train_orig2,axis = 1)
-Y_train_orig = np.append(Y_train_orig,Y_train_orig3,axis = 1)
-Y_train_orig = np.append(Y_train_orig,Y_train_orig4,axis = 1)
-Y_train_orig = np.append(Y_train_orig,Y_train_orig5,axis = 1)
-Y_train_orig = np.append(Y_train_orig,Y_train_orig6,axis = 1)
-Y_train_orig = np.append(Y_train_orig,Y_train_orig7,axis = 1)
-Y_train_orig = np.append(Y_train_orig,Y_train_orig8,axis = 1)
-Y_train_orig = np.append(Y_train_orig,Y_train_orig9,axis = 1)
-Y_train_orig = np.append(Y_train_orig,Y_train_orig10,axis = 1)
-
-np.save("X_train_orig_64.npy",X_train_orig)
-np.save("Y_train_orig_64.npy",Y_train_orig)
-
-X_test_orig , Y_test_orig = loadTestImages("D:\\asha1\\Work\\IFFT_Code\\Automap_Data\\MasterTest")
-np.save("X_test_orig_64.npy",X_test_orig)
-np.save("Y_test_orig_64.npy",Y_test_orig)
-#
 
