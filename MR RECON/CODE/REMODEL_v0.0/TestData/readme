@@ -1,1 +1,9 @@
-How to read this numpy test data and compare with expected result
+About the test data.
+
+X_test_orig_64.npy contains 64x64x190 currupted and untrained images from HCP data base.
+Y_test_orig_64.npy contains 64x64x190 corresponding expected images.
+To load the files into python use below code.
+
+import numpy as np
+
+x_test_orig = np.loas("TestData\\X_test_orig_64.npy")
