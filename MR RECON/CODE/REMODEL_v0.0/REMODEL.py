@@ -45,8 +45,8 @@ num_classes = img_size*img_size
 X_train_orig = np.load("X_train_orig_64.npy")
 Y_train_orig = np.load("Y_train_orig_64.npy")
 
-X_test_orig = np.load("X_test_orig_64.npy")
-Y_test_orig = np.load("Y_test_orig_64.npy")
+X_test_orig = np.load("TestData\\X_test_orig_64.npy")
+Y_test_orig = np.load("TestData\\Y_test_orig_64.npy")
 
 
 
@@ -518,13 +518,13 @@ def optimize(num_iterations):
 
 
 
-#saver.restore(session, "/Data/OffResonance/CNN/64x64_head/tmpDF400_100Kdf/model.ckpt")
-optimize(num_iterations=1)    
+saver.restore(session, "chkPoint/model.ckpt")
 
 
 
 
-optimize(num_iterations=600) # We already performed 1 iteration above.
+
+#optimize(num_iterations=600) 
 X_train = X_train
 Y_train = Y_train
 
