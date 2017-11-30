@@ -19,7 +19,7 @@ Finally, there are several folders:
 
 # Model architecture
 <center>
-<img src="https://github.com/mirc-dsi/IMRI-MIRC/tree/master/MR%20RECON/CODE/REMODEL_v0.0/images/remodel_architecture.png" >
+<img src="https://github.com/mirc-dsi/IMRI-MIRC/tree/master/MR%20RECON/CODE/REMODEL_v0.0/images/remodel_architecture.png" width = "500" >
 *Figure1: a) Field maps with off resonance ±50kHz used for training b) flow chart of the REMODEL method c) REMODEL implementation with a deep neural network architecture composed of 3 fully-connected layers (FC1 to FC3) with Relu activation function followed by 3 convolutional layer (FC3 to Image) and a deconvolution layer with Relu activation function and adam optimizer for back propogation*
 </center>
 
