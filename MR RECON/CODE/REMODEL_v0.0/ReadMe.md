@@ -20,7 +20,7 @@ Finally, there are several folders:
 # Model architecture
 <center>
 <img src="https://github.com/mirc-dsi/IMRI-MIRC/tree/master/MR%20RECON/CODE/REMODEL_v0.0/images/remodel_architecture.png" width = "500" >
-*Figure1: a) Field maps with off resonance ±50kHz used for training b) flow chart of the REMODEL method c) REMODEL implementation with a deep neural network architecture composed of 3 fully-connected layers (FC1 to FC3) with Relu activation function followed by 3 convolutional layer (FC3 to Image) and a deconvolution layer with Relu activation function and adam optimizer for back propogation*
+*a) Field maps with off resonance ±50kHz used for training b) flow chart of the REMODEL method c) REMODEL implementation with a deep neural network architecture composed of 3 fully-connected layers (FC1 to FC3) with Relu activation function followed by 3 convolutional layer (FC3 to Image) and a deconvolution layer with Relu activation function and adam optimizer for back propogation*
 </center>
 
 ## General overview 
@@ -45,10 +45,7 @@ random field maps.
 #Preliminary Data
 
 <center>
-<img src="https://github.com/mirc-dsi/IMRI-MIRC/tree/master/MR%20RECON/CODE/REMODEL_v0.0/images/figure1.png" >
-*Figure 2a shows the 64x64 coronal image corrupted by ±30kHz off-resonance. The figure shows the blurring (red arrow) and pixel shifting (yellow) due to
-inhomogeneity. It can be observed in figure 2b that these artifacts are significantly removed by REMODEL. The line intensity profiles in figure 2d are similar to
-those shown for GT*
+<img src="https://github.com/mirc-dsi/IMRI-MIRC/tree/master/MR%20RECON/CODE/REMODEL_v0.0/images/figure1.png" width="400">
 </center>
 
 #Acknowledgements
